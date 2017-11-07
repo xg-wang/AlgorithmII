@@ -5,8 +5,13 @@ import java.awt.Color;
  */
 public class Element {
 
-    private final Color _color;
+    private Color _color;
     private int _energy2;
+
+    Element(Element e) {
+        _color = e._color;
+        _energy2 = e._energy2;
+    }
 
     Element(Color c) {
         _color = c;
@@ -15,6 +20,10 @@ public class Element {
 
     public Color getColor() {
         return _color;
+    }
+
+    public void setColor(Color color) {
+        _color = color;
     }
 
     public int getEnergy2() {
