@@ -5,33 +5,33 @@ import java.awt.Color;
  */
 public class Element {
 
-    private Color _color;
-    private int _energy2;
+    private Color color;
+    private int energy2;
 
     Element(Element e) {
-        _color = e._color;
-        _energy2 = e._energy2;
+        color = e.color;
+        energy2 = e.energy2;
     }
 
     Element(Color c) {
-        _color = c;
-        _energy2 = 1000000;
+        color = c;
+        energy2 = 1000000;
     }
 
     public Color getColor() {
-        return _color;
+        return color;
     }
 
     public void setColor(Color color) {
-        _color = color;
+        this.color = color;
     }
 
-    public int getEnergy2() {
-        return _energy2;
+    public double getEnergy() {
+        return Math.sqrt(energy2);
     }
 
     public void calculateEnergy2(Color cr, Color cl, Color cd, Color ct) {
-        _energy2 = squareSum(cr, cl) + squareSum(cd, ct);
+        energy2 = squareSum(cr, cl) + squareSum(cd, ct);
     }
     private int squareSum(Color cr, Color cl) {
         int r = cr.getRed() - cl.getRed();
