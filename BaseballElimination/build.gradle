@@ -1,0 +1,17 @@
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    maven {
+        url  "https://dl.bintray.com/algs4/maven"
+    }
+}
+
+dependencies {
+    compile 'edu.princeton.cs:algs4:1.0.3'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
