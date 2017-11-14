@@ -3,6 +3,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.HashSet;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -11,13 +12,13 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by Xingan Wang on 11/12/17.
  */
-public class BaseballEliminationTest {
+public class TrivialBaseballEliminationTest {
 
     BaseballElimination division;
 
     @BeforeClass
     public static void init() {
-        System.out.println("Testing BaseballElimination...");
+        System.out.println("Testing trivial BaseballElimination...");
     }
 
     @Before
@@ -41,8 +42,13 @@ public class BaseballEliminationTest {
 
     @Test
     public void evaluateCertificate() {
-        assertEquals("Philadelphia is eliminated by the subset R = { Atlanta New_York }", division.certificateOfElimination("Philadelphia"), Arrays.asList("Atlanta", "New_York"));
-        assertEquals("Montreal is eliminated by the subset R = { Atlanta }", division.certificateOfElimination("Philadelphia"), Arrays.asList("New_York"));
+        HashSet<String> s = new HashSet<String>();
+        for (String str : division.certificateOfElimination("Philadelphia")) {
+            s.add(str);
+        }
+        assertEquals("Philadelphia is eliminated by the subset R = { Atlanta New_York }",
+                s, new HashSet<>(Arrays.asList("Atlanta", "New_York")));
+        assertEquals("Montreal is eliminated by the subset R = { Atlanta }", division.certificateOfElimination("Montreal"), Arrays.asList("Atlanta"));
     }
 
 }
