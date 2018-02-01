@@ -37,7 +37,7 @@ import java.util.Iterator;
  *  @author Kevin Wayne
  */
 public class TrieSET implements Iterable<String> {
-    private static final int R = 256;        // extended ASCII
+    private static final int R = 26;        // extended ASCII
 
     private Node root;      // root of trie
     private int n;          // number of keys in trie
@@ -71,7 +71,7 @@ public class TrieSET implements Iterable<String> {
         if (x == null) return null;
         if (d == key.length()) return x;
         char c = key.charAt(d);
-        return get(x.next[c], key, d+1);
+        return get(x.next[c-'A'], key, d+1);
     }
 
     /**
@@ -91,7 +91,8 @@ public class TrieSET implements Iterable<String> {
         }
         else {
             char c = key.charAt(d);
-            x.next[c] = add(x.next[c], key, d+1);
+            int idx = c - 'A';
+            x.next[idx] = add(x.next[idx], key, d+1);
         }
         return x;
     }
