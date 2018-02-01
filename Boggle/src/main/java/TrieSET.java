@@ -43,7 +43,7 @@ public class TrieSET implements Iterable<String> {
     private int n;          // number of keys in trie
 
     // R-way trie node
-    private static class Node {
+    public static class Node {
         private Node[] next = new Node[R];
         private boolean isString;
     }
@@ -72,6 +72,15 @@ public class TrieSET implements Iterable<String> {
         if (d == key.length()) return x;
         char c = key.charAt(d);
         return get(x.next[c-'A'], key, d+1);
+    }
+
+    public Node queryPrefix(Node x, String prefix) {
+        int len = prefix.length();
+        if (len > 1 && prefix.charAt(len-2) == 'Q') {
+            x = x == null ? root.next['Q'-'A'] : x.next['Q'-'A'];
+        }
+        char c = prefix.charAt(len-1);
+        return (x == null) ? root.next[c-'A'] : x.next[c-'A'];
     }
 
     /**
@@ -140,7 +149,7 @@ public class TrieSET implements Iterable<String> {
         if (x == null) return;
         if (x.isString) results.enqueue(prefix.toString());
         for (char c = 0; c < R; c++) {
-            prefix.append(c);
+            prefix.append(c + 'A');
             collect(x.next[c], prefix, results);
             prefix.deleteCharAt(prefix.length() - 1);
         }

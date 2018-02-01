@@ -20,18 +20,19 @@ public class BoggleSolver
         }
     }
 
-    private void mergeValidWordsFrom(String prefix, int currRow, int currCol, BoggleBoard b, Set<String> words, int nrows, int ncols, boolean[][] visited) {
-        if (!trie.keysWithPrefix(prefix).iterator().hasNext()) {
-            return;
-        }
+    private void mergeValidWordsFrom(TrieSET.Node node, String prefix, int currRow, int currCol, BoggleBoard b, Set<String> words, boolean[][] visited) {
+        node = trie.queryPrefix(node, prefix);
         if (prefix.length() >= 3 && trie.contains(prefix)) {
             words.add(prefix);
         }
-        for (int i = Math.max(0, currRow-1); i <= Math.min(currRow+1, nrows-1); i++) {
-            for (int j = Math.max(0, currCol-1); j <= Math.min(currCol+1, ncols-1); j++) {
+        if (node == null) {
+            return;
+        }
+        for (int i = Math.max(0, currRow-1); i <= Math.min(currRow+1, b.rows()-1); i++) {
+            for (int j = Math.max(0, currCol-1); j <= Math.min(currCol+1, b.cols()-1); j++) {
                 if ((i == currRow && j == currCol) || visited[i][j]) continue;
                 visited[i][j] = true;
-                mergeValidWordsFrom(getStr(prefix, b.getLetter(i, j)), i, j, b, words, nrows, ncols, visited);
+                mergeValidWordsFrom(node, getStr(prefix, b.getLetter(i, j)), i, j, b, words, visited);
                 visited[i][j] = false;
             }
         }
@@ -48,7 +49,7 @@ public class BoggleSolver
             for (int j = 0; j < ncols; j++) {
                 boolean[][] visited = new boolean[nrows][ncols];
                 visited[i][j] = true;
-                mergeValidWordsFrom(getStr("", board.getLetter(i, j)), i, j, board, words, nrows, ncols, visited);
+                mergeValidWordsFrom(null, getStr("", board.getLetter(i, j)), i, j, board, words, visited);
             }
         }
         return words;
@@ -58,7 +59,7 @@ public class BoggleSolver
     // (You can assume the word contains only the uppercase letters A through Z.)
     public int scoreOf(String word) {
         int score = 0, len = word.length();
-        if (!trie.contains(word)) return score;
+        if (!trie.contains(word) || len < 3) return score;
         if (len < 5) return 1;
         if (len == 5) return 2;
         if (len == 6) return 3;
